@@ -207,3 +207,16 @@ video{ width:100%; height:auto; display:block; }
   .episodes-toggle { display: none !important; }
   .backdrop { display: none !important; }
 }
+
+#btnFull {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(148,163,184,.25);
+  background: transparent;
+  color: #e5e7eb;
+  cursor: pointer;
+  font-weight: 600;
+}
+#btnFull:hover {
+  background: rgba(148,163,184,.10);
+}

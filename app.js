@@ -16,6 +16,8 @@
   const chkAuto = document.querySelector("#chkAuto");
   const btnToggle = document.querySelector("#btnToggleEpisodes");
   const backdrop  = document.querySelector("#backdrop");
+  const btnFull = document.querySelector("#btnFull");
+
 
 
 
@@ -38,6 +40,16 @@
   function isMobile() {
   return window.matchMedia("(max-width: 900px)").matches;
 }
+
+function toggleFull() {
+  if (!document.fullscreenElement) {
+    // ขอ fullscreen ที่กล่อง video
+    video.requestFullscreen?.().catch(err=>console.warn("fullscreen fail", err));
+  } else {
+    document.exitFullscreen?.();
+  }
+}
+
 
 function openEpisodes() {
   const ep = document.getElementById("episodes");
@@ -241,6 +253,14 @@ document.addEventListener("keydown", (e)=>{
   if (e.key === "ArrowLeft")  { e.preventDefault(); goPrev(true); }
 });
 
+btnFull?.addEventListener("click", toggleFull);
+
+document.addEventListener("keydown", (e)=>{
+  if (e.key.toLowerCase() === "f") {
+    e.preventDefault();
+    toggleFull();
+  }
+});
 
   btnLoad.addEventListener("click", ()=> fetchSeries(sidInput.value));
   sidInput.addEventListener("keydown", (e)=>{ if (e.key === "Enter") fetchSeries(sidInput.value); });
