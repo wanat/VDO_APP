@@ -42,13 +42,22 @@
 }
 
 function toggleFull() {
-  if (!document.fullscreenElement) {
-    // ขอ fullscreen ที่กล่อง video
-    video.requestFullscreen?.().catch(err=>console.warn("fullscreen fail", err));
+  const el = video;
+  const doc = document;
+  const isFs = doc.fullscreenElement || doc.webkitFullscreenElement;
+
+  if (!isFs) {
+    // มาตรฐาน
+    if (el.requestFullscreen) return el.requestFullscreen().catch(()=>{});
+    // iOS Safari/เก่า
+    if (el.webkitEnterFullscreen) return el.webkitEnterFullscreen();
+    if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
   } else {
-    document.exitFullscreen?.();
+    if (doc.exitFullscreen) return doc.exitFullscreen();
+    if (doc.webkitExitFullscreen) return doc.webkitExitFullscreen();
   }
 }
+
 
 
 function openEpisodes() {
@@ -155,23 +164,6 @@ try {
     [...epsEl.children].forEach((el, i)=>{
       if (i === current.index) el.classList.add("playing"); else el.classList.remove("playing");
     });
-  }
-
-  function playIndex(i, userInitiated){
-    if (!current.episodes[i]) return;
-    current.index = i;
-    const url = current.episodes[i].video_url;
-    if (!url){ setStatus("URL วิดีโอไม่ถูกต้อง", true); return; }
-
-    const t = current.episodes[i].episode_number ?? (i+1);
-    setStatus(`กำลังเล่น EP ${t}…`);
-    highlightPlaying();
-
-    video.src = url;
-    video.load();
-    if (userInitiated){
-      video.play().catch(()=>{});
-    }
   }
 
   function scrollCurrentIntoView(){
