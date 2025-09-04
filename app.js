@@ -256,7 +256,12 @@ document.addEventListener("keydown", (e)=>{
 
   btnLoad.addEventListener("click", ()=> fetchSeries(sidInput.value));
   sidInput.addEventListener("keydown", (e)=>{ if (e.key === "Enter") fetchSeries(sidInput.value); });
-  linkEx.addEventListener("click", (e)=>{ e.preventDefault(); sidInput.value="0003"; fetchSeries("0003"); });
+  linkEx?.addEventListener("click", (e)=>{
+  e.preventDefault();
+  sidInput.value = "0003";
+  fetchSeries("0003");
+});
+
 
   btnToggle?.addEventListener("click", toggleEpisodes);
 backdrop?.addEventListener("click", closeEpisodes);
