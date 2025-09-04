@@ -30,7 +30,7 @@
         </div>
       </aside>
 
-      <section class="content">
+    <section class="content">
   <div class="vidwrap">
     <video id="player" controls playsinline></video>
     <div class="controls">
@@ -43,8 +43,16 @@
     </div>
   </div>
 
-  <div id="episodes" class="episodes"></div>
+  <!-- แผงรายชื่อตอน (drawer) -->
+  <div id="episodes" class="episodes" role="complementary" aria-label="รายชื่อตอน" aria-hidden="true"></div>
 </section>
+
+<!-- ปุ่มลอยสำหรับมือถือ -->
+<button id="btnToggleEpisodes" class="episodes-toggle" aria-controls="episodes" aria-expanded="false" title="เปิด/ปิดรายชื่อตอน">ตอน ▸</button>
+
+<!-- ฉากหลังตอนเปิด drawer บนมือถือ -->
+<div id="backdrop" class="backdrop" hidden></div>
+
     </div>
   </main>
 

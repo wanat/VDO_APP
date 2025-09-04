@@ -14,6 +14,9 @@
   const btnPrev = document.querySelector("#btnPrev");
   const btnNext = document.querySelector("#btnNext");
   const chkAuto = document.querySelector("#chkAuto");
+  const btnToggle = document.querySelector("#btnToggleEpisodes");
+  const backdrop  = document.querySelector("#backdrop");
+
 
 
   let current = { id:null, title:"", episodes:[], index:-1 };
@@ -31,6 +34,32 @@
 
   function saveLast(id){ try{ localStorage.setItem("last_series_id", id);}catch{} }
   function loadLast(){ try{ return localStorage.getItem("last_series_id")||"";}catch{ return "" } }
+
+  function isMobile() {
+  return window.matchMedia("(max-width: 900px)").matches;
+}
+
+function openEpisodes() {
+  const ep = document.getElementById("episodes");
+  ep.classList.add("open");
+  ep.setAttribute("aria-hidden", "false");
+  btnToggle?.setAttribute("aria-expanded", "true");
+  if (backdrop) { backdrop.hidden = false; backdrop.classList.add("show"); }
+}
+
+function closeEpisodes() {
+  const ep = document.getElementById("episodes");
+  ep.classList.remove("open");
+  ep.setAttribute("aria-hidden", "true");
+  btnToggle?.setAttribute("aria-expanded", "false");
+  if (backdrop) { backdrop.classList.remove("show"); backdrop.hidden = true; }
+}
+
+function toggleEpisodes() {
+  const ep = document.getElementById("episodes");
+  if (ep.classList.contains("open")) closeEpisodes(); else openEpisodes();
+}
+
 
   async function fetchSeries(idRaw){
     const id = normId(idRaw);
@@ -100,7 +129,11 @@ try {
       row.appendChild(epno);
       row.appendChild(title);
 
-      row.addEventListener("click", ()=> playIndex(i, true));
+      row.addEventListener("click", ()=>{
+  playIndex(i, true);
+  if (isMobile()) closeEpisodes(); // มือถือ เลือกตอนแล้วปิด drawer เพื่อดูวิดีโอเต็ม ๆ
+});
+
       epsEl.appendChild(row);
     });
     highlightPlaying();
@@ -212,6 +245,14 @@ document.addEventListener("keydown", (e)=>{
   btnLoad.addEventListener("click", ()=> fetchSeries(sidInput.value));
   sidInput.addEventListener("keydown", (e)=>{ if (e.key === "Enter") fetchSeries(sidInput.value); });
   linkEx.addEventListener("click", (e)=>{ e.preventDefault(); sidInput.value="0003"; fetchSeries("0003"); });
+
+  btnToggle?.addEventListener("click", toggleEpisodes);
+backdrop?.addEventListener("click", closeEpisodes);
+
+document.addEventListener("keydown", (e)=>{
+  // ปิดด้วย ESC
+  if (e.key === "Escape" && isMobile()) closeEpisodes();
+});
 
   // auto-load จาก query ?series=xxxx หรือจากค่าเดิม
   const urlParams = new URLSearchParams(location.search);

@@ -93,3 +93,117 @@ video{ width:100%; height:auto; display:block; }
   outline: 2px solid var(--accent);
   background: rgba(59,130,246,.15);
 }
+/* จัดวาง video + episodes ข้างกัน */
+.content {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+/* รายชื่อตอนเป็น grid 3 คอลัมน์ (โหมดเดสก์ท็อป) */
+.episodes {
+  flex: 0 0 360px;
+  max-height: 600px;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid rgba(148,163,184,.12);
+  border-radius: var(--br);
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/* การ์ดตอน */
+.row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: rgba(148,163,184,.05);
+  text-align: center;
+}
+.row:hover { background: rgba(148,163,184,.12); }
+
+.epno {
+  font-variant-numeric: tabular-nums;
+  background: var(--chip);
+  padding: 4px 8px;
+  border-radius: 8px;
+  color: #cbd5e1;
+  font-size: 12px;
+}
+
+.playing {
+  outline: 2px solid var(--accent);
+  background: rgba(59,130,246,.15);
+}
+
+/* ปุ่มลอยเปิดรายชื่อตอน (แสดงเฉพาะมือถือ) */
+.episodes-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 25;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,.25);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  display: none; /* เดสก์ท็อปซ่อน */
+}
+
+/* ฉากหลังตอนเปิด drawer */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 15;
+  display: none;
+}
+
+/* ============ โหมดมือถือ ============ */
+@media (max-width: 900px) {
+  /* content ซ้อนกัน */
+  .content { display: block; }
+
+  /* episodes เป็น drawer สไลด์จากขวา */
+  .episodes {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: min(90vw, 420px);
+    max-height: none;
+    border-radius: 0;
+    border-left: 1px solid rgba(148,163,184,.2);
+    transform: translateX(100%);
+    transition: transform .25s ease;
+    z-index: 20;
+    /* มือถือให้ 2 คอลัมน์เพื่อแตะง่ายขึ้น */
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .episodes.open { transform: translateX(0); }
+
+  .episodes-toggle { display: inline-flex; align-items: center; gap: 6px; }
+
+  .backdrop.show { display: block; }
+}
+
+/* ============ โหมดเดสก์ท็อป ============ */
+@media (min-width: 901px) {
+  /* เดสก์ท็อปให้ติดขวาเหมือน sidebar */
+  .episodes {
+    position: sticky;
+    top: 80px;
+    height: calc(100vh - 100px);
+    transform: none !important;
+  }
+  .episodes-toggle { display: none !important; }
+  .backdrop { display: none !important; }
+}
