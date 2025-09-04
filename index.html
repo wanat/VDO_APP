@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PlasomTV Viewer (no server)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="wrap">
+      <h1>PlasomTV Viewer</h1>
+      <div class="bar">
+        <label for="sid" class="pill">ใส่ series_id</label>
+        <input id="sid" type="text" placeholder="เช่น 0003 หรือ 1234 (ไม่ใส่ 0 นำหน้าก็ได้)" />
+        <button id="btnLoad">โหลดซีรีส์</button>
+        <span class="hint">ใส่ค่าแล้วกด Enter ก็ได้ • ตัวอย่าง: <a href="#" id="ex">0003</a></span>
+      </div>
+      <div id="status" class="status"></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <aside class="card">
+        <img id="poster" class="poster" alt="poster" />
+        <div class="meta">
+          <h2 id="title">—</h2>
+          <div id="desc" class="muted">ใส่ series_id แล้วกดโหลด</div>
+        </div>
+      </aside>
+
+      <section class="content">
+  <div class="vidwrap">
+    <video id="player" controls playsinline></video>
+    <div class="controls">
+      <button id="btnPrev" title="ตอนก่อนหน้า (←)">⟨ Prev</button>
+      <button id="btnNext" title="ตอนถัดไป (→)">Next ⟩</button>
+      <label class="autoplay">
+        <input type="checkbox" id="chkAuto" checked>
+        เล่นตอนถัดไปอัตโนมัติ
+      </label>
+    </div>
+  </div>
+
+  <div id="episodes" class="episodes"></div>
+</section>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
